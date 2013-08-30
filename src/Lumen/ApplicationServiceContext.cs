@@ -11,6 +11,6 @@ namespace Lumen
         }
 
         public dynamic Payload { get; private set; }
-        public IUser User { get; set; }
+        public IUser User { get; private set; }
     }
 }
