@@ -2,7 +2,7 @@ using System;
 
 namespace Lumen
 {
-    internal static class Ensure
+    public static class Ensure
     {
         public static T NotNull<T>(T obj, string paramName)
             where T : class
