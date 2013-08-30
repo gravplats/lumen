@@ -55,6 +55,9 @@
     <Compile Include="ApplicationServiceFactory.cs" />
     <Compile Include="ApplicationServiceFilterProvider.cs" />
     <Compile Include="ApplicationServiceInvoker.cs" />
+    <Compile Include="ApplicationConfiguration.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="DependencyAttribute.cs" />
     <Compile Include="NoPayloadAttribute.cs" />
     <Compile Include="NoValidatorAttribute.cs" />
     <Compile Include="PayloadValidationFilter.cs" />
