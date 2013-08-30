@@ -55,6 +55,8 @@
     <Compile Include="ApplicationServiceFactory.cs" />
     <Compile Include="ApplicationServiceFilterProvider.cs" />
     <Compile Include="ApplicationServiceInvoker.cs" />
+    <Compile Include="NoPayloadAttribute.cs" />
+    <Compile Include="NoValidatorAttribute.cs" />
     <Compile Include="PayloadValidationFilter.cs" />
     <Compile Include="PayloadValidationException.cs" />
     <Compile Include="Ensure.cs" />
