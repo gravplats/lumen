@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\packages\FluentValidation.4.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -48,12 +51,16 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ApplicationService.cs" />
+    <Compile Include="ApplicationServiceContext.cs" />
     <Compile Include="ApplicationServiceFactory.cs" />
     <Compile Include="ApplicationServiceFilterProvider.cs" />
     <Compile Include="ApplicationServiceInvoker.cs" />
+    <Compile Include="PayloadValidationFilter.cs" />
+    <Compile Include="PayloadValidationException.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="ApplicationServiceFilter.cs" />
     <Compile Include="ApplicationServicePipelineFactory.cs" />
+    <Compile Include="PayloadValidator.cs" />
     <Compile Include="Security\ApplicationIdentity.cs" />
     <Compile Include="Security\ApplicationPrincipal.cs" />
     <Compile Include="Security\User.cs" />

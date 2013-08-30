@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\packages\FluentValidation.4.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
     </Compile>
     <Compile Include="ApplicationServiceInvokerTests.cs" />
     <Compile Include="AssertExtensions.cs" />
+    <Compile Include="PayloadValidationFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lumen\Lumen.csproj">
