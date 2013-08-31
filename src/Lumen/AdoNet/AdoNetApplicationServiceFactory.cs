@@ -17,7 +17,8 @@ namespace Lumen.AdoNet
             return kernel.Get<TService>(
                 new ConstructorArgument("payload", context.Payload),
                 new ConstructorArgument("currentUser", context.User),
-                new ConstructorArgument("connection", context.Transaction.Connection)
+                new ConstructorArgument("connection", context.Transaction.Connection),
+                new ConstructorArgument("transaction", context.Transaction)
             );
         }
     }
