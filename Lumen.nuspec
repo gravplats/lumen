@@ -3,11 +3,8 @@
   <metadata>
     <id>Lumen</id>
     <version>The version is updated by the build system</version>
-    <description></description>
+    <description>Application framework.</description>
     <authors>Mattias Rydengren</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl></licenseUrl>
-    <projectUrl></projectUrl>
-    <tags></tags>
   </metadata>
 </package>

@@ -3,10 +3,10 @@ include .\extensions.ps1
 properties {
     # name of solution and nuspec.
     $name                   = "Lumen"
-    $version                = "0.1"
+    $version                = "0.1.1"
 
     # files that should be part of the nuget.
-    $nuget_package_files    = @( "$name.???" )
+    $nuget_package_files    = @( "$name.???", "$name.AspNetMvc.???" )
     
     # shouldn't normally be any need change the variables below this comment.
     $root                   = Resolve-Path .
