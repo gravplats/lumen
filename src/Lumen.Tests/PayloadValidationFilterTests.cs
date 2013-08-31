@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Lumen.Security;
 using NUnit.Framework;
 using Ninject;
 
@@ -8,14 +7,24 @@ namespace Lumen.Tests
     [TestFixture]
     public class PayloadValidationFilterTests
     {
-        public class Payload
+        public class TestContext : IPayload
+        {
+            public TestContext(dynamic payload)
+            {
+                Payload = payload;
+            }
+
+            public dynamic Payload { get; private set; }
+        }
+
+        public class TestPayload
         {
             public string Text { get; set; }
         }
 
-        public class PayloadValidator : AbstractValidator<Payload>
+        public class TestPayloadValidator : AbstractValidator<TestPayload>
         {
-            public PayloadValidator()
+            public TestPayloadValidator()
             {
                 RuleFor(x => x.Text).NotEmpty();
             }
@@ -26,12 +35,12 @@ namespace Lumen.Tests
         {
             var kernel = new StandardKernel();
             kernel.Bind<PayloadValidator>().ToSelf().InSingletonScope();
-            kernel.Bind<IValidator<Payload>>().To<PayloadValidator>().InSingletonScope();
-            kernel.Bind<PayloadValidationFilter>().ToSelf().InSingletonScope();
+            kernel.Bind<IValidator<TestPayload>>().To<TestPayloadValidator>().InSingletonScope();
+            kernel.Bind<PayloadValidationFilter<TestContext>>().ToSelf().InSingletonScope();
 
-            var context = new ApplicationServiceContext(new Payload(), new User());
+            var context = new TestContext(new TestPayload());
 
-            var filter = kernel.Get<PayloadValidationFilter>();
+            var filter = kernel.Get<PayloadValidationFilter<TestContext>>();
             filter.Register<object>(ctx => null);
 
             Assert.Throws<PayloadValidationException>(() => filter.Process<object>(context));

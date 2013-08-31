@@ -3,12 +3,13 @@ using Lumen.Security;
 
 namespace Lumen.AdoNet
 {
-    public class AdoNetApplicationServiceContext
+    public class AdoNetApplicationServiceContext : IPayload
     {
         public AdoNetApplicationServiceContext(dynamic payload, IUser user, IDbTransaction transaction)
         {
             Payload = Ensure.NotNull(payload, "payload");
-            User = Ensure.NotNull(user, "user");
+            // The current user will be null if not authenticated.
+            User = user;
             Transaction = Ensure.NotNull(transaction, "transaction");
         }
 

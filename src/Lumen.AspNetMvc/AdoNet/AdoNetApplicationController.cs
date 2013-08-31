@@ -21,7 +21,7 @@ namespace Lumen.AspNetMvc.AdoNet
 
         protected override TResult InvokeService<TService, TPayload, TResult>(TPayload payload, TUser user)
         {
-            var invoker = DependencyResolver.Current.GetService<ApplicationServiceInvoker<AdoNetApplicationServiceContext>>();
+            var invoker = DependencyResolver.Current.GetService<AdoNetApplicationServiceInvoker>();
             return invoker.Invoke<TService, TResult>(new AdoNetApplicationServiceContext(payload, user, Transaction));
         }
     }

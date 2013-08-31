@@ -7,7 +7,8 @@ namespace Lumen
         public ApplicationServiceContext(dynamic payload, IUser user)
         {
             Payload = Ensure.NotNull(payload, "payload");
-            User = Ensure.NotNull(user, "user");
+            // The current user will be null if not authenticated.
+            User = user;
         }
 
         public dynamic Payload { get; private set; }

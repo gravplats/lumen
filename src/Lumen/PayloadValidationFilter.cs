@@ -2,7 +2,8 @@
 
 namespace Lumen
 {
-    public class PayloadValidationFilter : ApplicationServiceFilter<ApplicationServiceContext>
+    public class PayloadValidationFilter<TContext> : ApplicationServiceFilter<TContext>
+        where TContext : class, IPayload
     {
         private readonly PayloadValidator validator;
 
@@ -11,7 +12,7 @@ namespace Lumen
             this.validator = Ensure.NotNull(validator, "validator");
         }
 
-        protected override TResult ProcessCore<TResult>(ApplicationServiceContext context, Func<ApplicationServiceContext, TResult> next)
+        protected override TResult ProcessCore<TResult>(TContext context, Func<TContext, TResult> next)
         {
             validator.Validate(context.Payload);
             return next(context);
