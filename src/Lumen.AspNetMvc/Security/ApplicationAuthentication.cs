@@ -54,7 +54,7 @@ namespace Lumen.AspNetMvc.Security
                 }
                 catch
                 {
-                    // do not leak any information if an exception was thrown; simply don't set the context.User property.
+                    // do not leak any information if an exception was thrown; simply don't set the context.LumenUser property.
                 }
                 finally
                 {

@@ -26,5 +26,5 @@ namespace Lumen.AspNetMvc.AdoNet
         }
     }
 
-    public abstract class AdoNetApplicationController : AdoNetApplicationController<User> { }
+    public abstract class AdoNetApplicationController : AdoNetApplicationController<LumenUser> { }
 }

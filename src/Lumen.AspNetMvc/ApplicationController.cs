@@ -150,5 +150,5 @@ namespace Lumen.AspNetMvc
         }
     }
 
-    public abstract class ApplicationController : ApplicationController<User> { }
+    public abstract class ApplicationController : ApplicationController<LumenUser> { }
 }

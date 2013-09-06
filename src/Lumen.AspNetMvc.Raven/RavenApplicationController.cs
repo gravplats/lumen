@@ -25,5 +25,5 @@ namespace Lumen.AspNetMvc.Raven
         }
     }
 
-    public abstract class RavenApplicationController : RavenApplicationController<User> { }
+    public abstract class RavenApplicationController : RavenApplicationController<LumenUser> { }
 }

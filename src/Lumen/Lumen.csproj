@@ -75,7 +75,7 @@
     <Compile Include="PayloadValidator.cs" />
     <Compile Include="Security\ApplicationIdentity.cs" />
     <Compile Include="Security\ApplicationPrincipal.cs" />
-    <Compile Include="Security\User.cs" />
+    <Compile Include="Security\LumenUser.cs" />
     <Compile Include="Security\IAuthenticationToken.cs" />
     <Compile Include="Security\IUser.cs" />
   </ItemGroup>

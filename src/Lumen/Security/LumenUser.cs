@@ -2,7 +2,7 @@
 
 namespace Lumen.Security
 {
-    public class User : IUser
+    public class LumenUser : IUser
     {
         public Guid? AuthenticationToken { get; private set; }
 
