@@ -59,7 +59,7 @@ namespace Lumen.AspNetMvc.Bundling
 
             string absolutePath = virtualPath.GetAbsolutePath();
             // Must generate file before we include it; the file must exist otherwise the web optimization framework won't include it.
-            File.WriteAllText(absolutePath, "");
+            WriteDynamicContent(absolutePath, "");
 
             dynamicContentRegistry.Add(absolutePath, content);
 
@@ -74,12 +74,12 @@ namespace Lumen.AspNetMvc.Bundling
                 string absoluteScriptPath = item.Key;
                 var dynamicContent = item.Value;
 
+                WriteDynamicContent(absoluteScriptPath, dynamicContent.GenerateContent(bundleContext.HttpContext));
+
                 if (debug)
                 {
                     Watch(bundleContext, dynamicContent, absoluteScriptPath);
                 }
-
-                File.WriteAllText(absoluteScriptPath, dynamicContent.GenerateContent(bundleContext.HttpContext));
             }
 
             return base.EnumerateFiles(bundleContext);
@@ -103,18 +103,25 @@ namespace Lumen.AspNetMvc.Bundling
                     NotifyFilter = NotifyFilters.LastWrite
                 };
 
-                watcher.Changed += (sender, e) =>
-                {
-                    try
-                    {
-                        File.WriteAllText(absoluteScriptPath, dynamicContent.GenerateContent(bundleContext.HttpContext));
-                    }
-                    catch (Exception)
-                    {
-                        // Any exceptions here are most likely due to access permissions.
-                        // Suppress or the entire web server will crash.
-                    }
-                };
+                watcher.Changed += (sender, e) => WriteDynamicContent(absoluteScriptPath, dynamicContent.GenerateContent(bundleContext.HttpContext));
+            }
+        }
+
+        public virtual void WriteDynamicContent(string path, string content)
+        {
+            try
+            {
+                File.WriteAllText(path, content);
+            }
+            catch (IOException)
+            {
+                // these are annoying, why are they happening?!
+                throw;
+            }
+            catch (Exception)
+            {
+                // Any exceptions here are most likely due to access permissions.
+                // Suppress or the entire web server will crash.
             }
         }
     }
