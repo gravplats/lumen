@@ -96,10 +96,11 @@ namespace Lumen.AspNetMvc.Bundling
             foreach (var watchedVirtualPath in dynamicContent.WatchedVirtualPaths)
             {
                 string watchedAbsolutePath = watchedVirtualPath.GetAbsolutePath();
-                var watcher = new FileSystemWatcher(watchedAbsolutePath)
+                var watcher = new FileSystemWatcher(watchedAbsolutePath, dynamicContent.Filter)
                 {
                     EnableRaisingEvents = true,
-                    IncludeSubdirectories = true
+                    IncludeSubdirectories = true,
+                    NotifyFilter = NotifyFilters.LastWrite
                 };
 
                 watcher.Changed += (sender, e) =>

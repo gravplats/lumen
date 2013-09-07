@@ -92,14 +92,13 @@
     <Compile Include="AdoNet\AdoNetApplicationController.cs" />
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="ApplicationController.cs" />
-    <Compile Include="Bundling\AppRoutesContentGenerator.cs" />
     <Compile Include="Bundling\BundleExtensions.cs" />
     <Compile Include="Bundling\DynamicContentBundle.cs" />
     <Compile Include="Bundling\IDynamicContentGenerator.cs" />
     <Compile Include="Bundling\IDynamicContentPath.cs" />
     <Compile Include="Bundling\LessBundle.cs" />
     <Compile Include="Bundling\Mustache\JavaScriptGenerator.cs" />
-    <Compile Include="Bundling\Mustache\MustacheTemplatesContentGenerator.cs" />
+    <Compile Include="Bundling\Mustache\MustacheTemplates.cs" />
     <Compile Include="Bundling\Mustache\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
