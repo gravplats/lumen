@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Web;
 using System.Web.Optimization;
 
@@ -107,22 +109,35 @@ namespace Lumen.AspNetMvc.Bundling
             }
         }
 
-        public virtual void WriteDynamicContent(string path, string content)
+        protected virtual void WriteDynamicContent(string path, string content)
         {
             try
             {
                 File.WriteAllText(path, content);
             }
-            catch (IOException)
+            catch (Exception exception)
             {
-                // these are annoying, why are they happening?!
-                throw;
+                // if the web server tries to serve the file at the same time as we're updating it will get a 'sharing/lock violation'.
+                if (IsFileLocked(exception))
+                {
+                    Thread.Sleep(100);
+                    WriteDynamicContent(path, content);
+                }
+                else
+                {
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                // Any exceptions here are most likely due to access permissions.
-                // Suppress or the entire web server will crash.
-            }
+        }
+
+        const int ERROR_SHARING_VIOLATION = 32;
+        const int ERROR_LOCK_VIOLATION = 33;
+
+        // http://stackoverflow.com/a/11060322/199663
+        private static bool IsFileLocked(Exception exception)
+        {
+            int errorCode = Marshal.GetHRForException(exception) & ((1 << 16) - 1);
+            return errorCode == ERROR_SHARING_VIOLATION || errorCode == ERROR_LOCK_VIOLATION;
         }
     }
 }
