@@ -27,10 +27,4 @@
             return serviceFactory.Create<TService, TResult>(context).Execute();
         }
     }
-
-    public class ApplicationServiceInvoker : ApplicationServiceInvoker<ApplicationServiceContext>
-    {
-        public ApplicationServiceInvoker(ApplicationServiceFactory<ApplicationServiceContext> serviceFactory, ApplicationServicePipelineFactory<ApplicationServiceContext> pipelineFactory)
-            : base(serviceFactory, pipelineFactory) { }
-    }
 }

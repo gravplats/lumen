@@ -21,7 +21,7 @@ namespace Lumen.AspNetMvc.Security
         private bool AllowAnonymous()
         {
             return actionDescriptor.IsDefined(typeof(ApplicationAllowAnonymousAttribute), inherit: true) ||
-                actionDescriptor.ControllerDescriptor.IsDefined(typeof(ApplicationAllowAnonymousAttribute), inherit: true);
+                   actionDescriptor.ControllerDescriptor.IsDefined(typeof(ApplicationAllowAnonymousAttribute), inherit: true);
         }
 
         protected abstract IApplicationAuthentication CreateAuthentication(HttpContextBase httpContext);

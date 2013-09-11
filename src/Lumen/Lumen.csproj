@@ -51,11 +51,6 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AdoNet\AdoNetApplicationServicePipelineFactory.cs" />
-    <Compile Include="AdoNet\AdoNetApplicationServiceContext.cs" />
-    <Compile Include="AdoNet\AdoNetApplicationServiceFactory.cs" />
-    <Compile Include="AdoNet\AdoNetApplicationServiceFilterProvider.cs" />
-    <Compile Include="AdoNet\AdoNetApplicationServiceInvoker.cs" />
     <Compile Include="ApplicationService.cs" />
     <Compile Include="ApplicationServiceContext.cs" />
     <Compile Include="ApplicationServiceFactory.cs" />
