@@ -22,8 +22,7 @@ namespace Lumen
         public override TService Create<TService, TResult>(ApplicationServiceContext context)
         {
             return kernel.Get<TService>(
-                new ConstructorArgument("payload", context.Payload),
-                new ConstructorArgument("currentUser", context.User)
+                new ConstructorArgument("payload", context.Payload)
             );
         }
     }

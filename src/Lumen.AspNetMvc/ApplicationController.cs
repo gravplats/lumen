@@ -69,12 +69,12 @@ namespace Lumen.AspNetMvc
             });
         }
 
-        protected virtual TResult InvokeService<TService, TPayload, TResult>(TPayload payload, TUser user)
+        protected virtual TResult InvokeService<TService, TPayload, TResult>(TPayload payload)
             where TService : ApplicationService<TResult>
             where TPayload : class, new()
         {
             var invoker = DependencyResolver.Current.GetService<ApplicationServiceInvoker<ApplicationServiceContext>>();
-            return invoker.Invoke<TService, TResult>(new ApplicationServiceContext(payload, user));
+            return invoker.Invoke<TService, TResult>(new ApplicationServiceContext(payload));
         }
 
         private ActionResult InvokeService<TService, TPayload, TResult>(Func<TPayload, TResult, ActionResult> getActionResult)
@@ -86,7 +86,7 @@ namespace Lumen.AspNetMvc
                 var payload = new TPayload();
                 TryUpdateModel(payload);
 
-                var result = InvokeService<TService, TPayload, TResult>(payload, User.Identity.User);
+                var result = InvokeService<TService, TPayload, TResult>(payload);
                 return getActionResult(payload, result);
             }
             catch (PayloadValidationException exception)
