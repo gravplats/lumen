@@ -130,7 +130,7 @@
     <Compile Include="Security\AppHarbor\StringExtensions.cs" />
     <Compile Include="Security\AppHarbor\SymmetricEncryption.cs" />
     <Compile Include="Security\AppHarbor\Validation.cs" />
-    <Compile Include="Security\ApplicationAllowAnonymousAttribute.cs" />
+    <Compile Include="Security\AllowAuthenticatedAnonymousAttribute.cs" />
     <Compile Include="Security\ApplicationAuthentication.cs" />
     <Compile Include="Security\ApplicationAuthorizeAttribute.cs" />
     <Compile Include="Security\AuthenticationCookieExtensions.cs" />
