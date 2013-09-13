@@ -52,11 +52,13 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ApplicationService.cs" />
+    <Compile Include="ApplicationServiceAuthorizationException.cs" />
     <Compile Include="ApplicationServiceContext.cs" />
     <Compile Include="ApplicationServiceFactory.cs" />
     <Compile Include="ApplicationServiceFilterProvider.cs" />
     <Compile Include="ApplicationServiceInvoker.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
+    <Compile Include="NoAuthorizationAttribute.cs" />
     <Compile Include="PipelineContext.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="DependencyAttribute.cs" />

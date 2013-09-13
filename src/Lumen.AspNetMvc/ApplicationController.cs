@@ -37,6 +37,11 @@ namespace Lumen.AspNetMvc
             return new CookieTempDataProvider();
         }
 
+        protected virtual HttpStatusCodeResult HttpForbidden()
+        {
+            return new HttpStatusCodeResult(403);
+        }
+
         protected virtual HttpStatusCodeResult HttpInternalServerError()
         {
             return new HttpStatusCodeResult(500);
@@ -91,11 +96,15 @@ namespace Lumen.AspNetMvc
             }
             catch (PayloadValidationException exception)
             {
-                return OnPayloadValidationError(exception);
+                return OnPayloadValidationException(exception);
+            }
+            catch (ApplicationServiceAuthorizationException exception)
+            {
+                return OnApplicationServiceAuthorizationException(exception);
             }
             catch (Exception exception)
             {
-                return OnServiceInvocationError(exception);
+                return OnServiceInvocationException(exception);
             }
         }
 
@@ -128,7 +137,7 @@ namespace Lumen.AspNetMvc
             return new JsonBadRequestResult(response);
         }
 
-        protected virtual ActionResult OnPayloadValidationError(PayloadValidationException exception)
+        protected virtual ActionResult OnPayloadValidationException(PayloadValidationException exception)
         {
             if (Request.IsAjaxRequest())
             {
@@ -139,7 +148,12 @@ namespace Lumen.AspNetMvc
             throw new NotSupportedException();
         }
 
-        protected virtual ActionResult OnServiceInvocationError(Exception exception)
+        protected virtual ActionResult OnApplicationServiceAuthorizationException(ApplicationServiceAuthorizationException exception)
+        {
+            return HttpForbidden();
+        }
+
+        protected virtual ActionResult OnServiceInvocationException(Exception exception)
         {
             if (Request.IsAjaxRequest())
             {
