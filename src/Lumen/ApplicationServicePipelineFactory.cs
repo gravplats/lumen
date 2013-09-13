@@ -15,7 +15,7 @@ namespace Lumen
             this.provider = Ensure.NotNull(provider, "provider");
         }
 
-        public Func<TContext, TResult> Create<TResult>(Func<TContext, TResult> sink)
+        public Func<PipelineContext, TContext, TResult> Create<TResult>(Func<PipelineContext, TContext, TResult> sink)
         {
             Ensure.NotNull(sink, "sink");
 
@@ -37,7 +37,7 @@ namespace Lumen
             {
                 last = filters[index + 1];
 
-                Func<TContext, TResult> func = last.Process<TResult>;
+                Func<PipelineContext, TContext, TResult> func = last.Process<TResult>;
                 current.Register(func);
 
                 current = last;

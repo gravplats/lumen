@@ -12,10 +12,10 @@ namespace Lumen
             this.validator = Ensure.NotNull(validator, "validator");
         }
 
-        protected override TResult ProcessCore<TResult>(TContext context, Func<TContext, TResult> next)
+        protected override TResult ProcessCore<TResult>(PipelineContext pipelineContext, TContext context, Func<PipelineContext, TContext, TResult> next)
         {
             validator.Validate(context.Payload);
-            return next(context);
+            return next(pipelineContext, context);
         }
     }
 }

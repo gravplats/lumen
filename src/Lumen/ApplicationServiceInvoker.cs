@@ -17,11 +17,13 @@
         {
             Ensure.NotNull(context, "context");
 
+            var pipelineContext = new PipelineContext(typeof(TService));
             var pipeline = pipelineFactory.Create(ExecuteService<TService, TResult>);
-            return pipeline(context);
+
+            return pipeline(pipelineContext, context);
         }
 
-        private TResult ExecuteService<TService, TResult>(TContext context)
+        private TResult ExecuteService<TService, TResult>(PipelineContext pipelineContext, TContext context)
             where TService : ApplicationService<TResult>
         {
             return serviceFactory.Create<TService, TResult>(context).Execute();

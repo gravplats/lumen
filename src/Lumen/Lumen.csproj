@@ -57,6 +57,7 @@
     <Compile Include="ApplicationServiceFilterProvider.cs" />
     <Compile Include="ApplicationServiceInvoker.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
+    <Compile Include="PipelineContext.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="DependencyAttribute.cs" />
     <Compile Include="IPayload.cs" />
