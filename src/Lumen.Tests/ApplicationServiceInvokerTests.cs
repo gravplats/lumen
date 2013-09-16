@@ -12,9 +12,9 @@ namespace Lumen.Tests
 
         public class TestFilter : ApplicationServiceFilter<TestContext>
         {
-            protected override TResult ProcessCore<TResult>(TestContext context, Func<TestContext, TResult> next)
+            protected override TResult ProcessCore<TResult>(PipelineContext pipelineContext, TestContext context, Func<PipelineContext, TestContext, TResult> next)
             {
-                return next(context);
+                return next(pipelineContext, context);
             }
         }
 
