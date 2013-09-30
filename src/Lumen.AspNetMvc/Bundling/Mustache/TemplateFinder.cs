@@ -30,7 +30,7 @@ namespace Lumen.AspNetMvc.Bundling.Mustache
 
             return directory
                 .GetFiles(searchPattern, SearchOption.AllDirectories)
-                .Select(fi => new Template(fi, physicalApplicationPath, templateTopVirtualPath));
+                .Select(fi => new Template(fi, physicalApplicationPath));
         }
     }
 }
