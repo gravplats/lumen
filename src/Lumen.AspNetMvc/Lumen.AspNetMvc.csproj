@@ -89,6 +89,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="ApplicationController.cs" />
     <Compile Include="Bundling\BundleExtensions.cs" />
@@ -114,7 +117,6 @@
     <Compile Include="CookieTempDataProvider.cs" />
     <Compile Include="JsonRedirectResult.cs" />
     <Compile Include="JsonValidationErrorResponse.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\HttpBrowserCapabilitiesStub.cs" />
     <Compile Include="Rendering\HttpContextStub.cs" />
     <Compile Include="Rendering\HttpRequestStub.cs" />
