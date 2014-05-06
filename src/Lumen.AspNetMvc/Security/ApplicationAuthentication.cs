@@ -65,7 +65,7 @@ namespace Lumen.AspNetMvc.Security
             return false;
         }
 
-        protected abstract TUser GetUser(HttpContextBase httpContext, string username);
+        protected abstract TUser GetUser(HttpContextBase httpContext, string identifier);
 
         private static void RenewCookieIfExpiring(HttpContextBase context, CookieProtector protector, AuthenticationCookie authenticationCookie)
         {

@@ -15,23 +15,23 @@ namespace Lumen.AspNetMvc.Security
             RemoveCookie();
         }
 
-        public Guid Generate(string username)
+        public Guid Generate(string identifier)
         {
             Guid authenticationToken;
 
-            var httpCookie = CreateCookie(username, out authenticationToken);
+            var httpCookie = CreateCookie(identifier, out authenticationToken);
             HttpContext.Current.Response.Cookies.Add(httpCookie);
 
             return authenticationToken;
         }
 
-        public static HttpCookie CreateCookie(string username, out Guid authenticationToken, bool persistent = false)
+        public static HttpCookie CreateCookie(string identifier, out Guid authenticationToken, bool persistent = false)
         {
             using (var protector = new CookieProtector(Configuration))
             {
                 authenticationToken = Guid.NewGuid();
 
-                var authenticationCookie = new AuthenticationCookie(0, authenticationToken, persistent, username);
+                var authenticationCookie = new AuthenticationCookie(0, authenticationToken, persistent, identifier);
                 return authenticationCookie.CreateHttpCookie(protector, Configuration);
             }
         }

@@ -6,7 +6,7 @@ namespace Lumen.Security
     {
         public Guid? AuthenticationToken { get; private set; }
 
-        public string Username { get; set; }
+        public string Identifier { get; set; }
 
         public virtual void Revoke()
         {
@@ -16,7 +16,7 @@ namespace Lumen.Security
         public virtual void SetAuthenticationToken(IAuthenticationToken token)
         {
             Ensure.NotNull(token, "token");
-            AuthenticationToken = token.Generate(Username);
+            AuthenticationToken = token.Generate(Identifier);
         }
     }
 }

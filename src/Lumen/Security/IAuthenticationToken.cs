@@ -6,6 +6,6 @@ namespace Lumen.Security
     {
         void Clear(IUser user);
 
-        Guid Generate(string username);
+        Guid Generate(string identifier);
     }
 }

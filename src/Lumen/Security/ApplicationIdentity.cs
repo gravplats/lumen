@@ -14,7 +14,7 @@ namespace Lumen.Security
 
         public string Name
         {
-            get { return User == null ? null : User.Username; }
+            get { return User == null ? null : User.Identifier; }
         }
 
         public string AuthenticationType

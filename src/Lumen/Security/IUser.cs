@@ -6,7 +6,7 @@ namespace Lumen.Security
     {
         Guid? AuthenticationToken { get; }
 
-        string Username { get; }
+        string Identifier { get; }
 
         void SetAuthenticationToken(IAuthenticationToken token);
 
