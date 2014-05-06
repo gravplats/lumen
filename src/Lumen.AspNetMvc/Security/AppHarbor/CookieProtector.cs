@@ -32,7 +32,8 @@ namespace Lumen.AspNetMvc.Security.AppHarbor
 
             var versionedData = new byte[data.Length + 1];
             Buffer.BlockCopy(data, 0, versionedData, 1, data.Length);
-            return Convert.ToBase64String(versionedData);
+
+            return Encode(versionedData);
         }
 
         public bool Validate(string cookie, out string data)
@@ -54,7 +55,7 @@ namespace Lumen.AspNetMvc.Security.AppHarbor
             data = null;
             try
             {
-                var versionedCookieData = Convert.FromBase64String(cookie);
+                var versionedCookieData = Decode(cookie);
 
                 if (versionedCookieData.Length == 0 || versionedCookieData[0] != 0)
                 {
@@ -79,6 +80,29 @@ namespace Lumen.AspNetMvc.Security.AppHarbor
             {
                 return false;
             }
+        }
+
+        private static string Encode(byte[] data)
+        {
+            // OWIN assumes that the data is Base64 URL encoded.
+            return Convert.ToBase64String(data).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        }
+
+        private static byte[] Decode(string text)
+        {
+            // OWIN assumes that the data is Base64 URL encoded.
+            return Convert.FromBase64String(Pad(text.Replace('-', '+').Replace('_', '/')));
+        }
+
+        private static string Pad(string text)
+        {
+            var padding = 3 - ((text.Length + 3) % 4);
+            if (padding == 0)
+            {
+                return text;
+            }
+
+            return text + new string('=', padding);
         }
     }
 }
