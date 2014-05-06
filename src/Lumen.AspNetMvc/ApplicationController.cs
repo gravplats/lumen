@@ -131,7 +131,7 @@ namespace Lumen.AspNetMvc
             return new JsonRedirectResult(obj);
         }
 
-        protected virtual JsonNetResult JsonValidationError(string message = null, Dictionary<string, string> fields = null)
+        protected virtual JsonNetResult JsonValidationError(object message = null, object fields = null)
         {
             var response = new JsonValidationErrorResponse(message, fields);
             return new JsonBadRequestResult(response);
