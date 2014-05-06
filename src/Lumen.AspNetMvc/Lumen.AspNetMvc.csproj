@@ -100,12 +100,6 @@
     <Compile Include="CookieTempDataProvider.cs" />
     <Compile Include="JsonRedirectResult.cs" />
     <Compile Include="JsonValidationErrorResponse.cs" />
-    <Compile Include="Rendering\HttpBrowserCapabilitiesStub.cs" />
-    <Compile Include="Rendering\HttpContextStub.cs" />
-    <Compile Include="Rendering\HttpRequestStub.cs" />
-    <Compile Include="Rendering\StringRenderConfiguration.cs" />
-    <Compile Include="Rendering\ViewContextStub.cs" />
-    <Compile Include="Rendering\ViewWriter.cs" />
     <Compile Include="Security\AppHarbor\AuthenticationCookie.cs" />
     <Compile Include="Security\AppHarbor\ConfigFileAuthenticationConfiguration.cs" />
     <Compile Include="Security\AppHarbor\CookieIdentity.cs" />
