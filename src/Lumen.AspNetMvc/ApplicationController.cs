@@ -51,26 +51,58 @@ namespace Lumen.AspNetMvc
             return new HttpStatusCodeResult(200);
         }
 
-        protected virtual ActionResult Invoke<TService, TPayload>(Func<TPayload, ActionResult> actionResultProvider = null)
+        protected virtual ActionResult Invoke<TService>(Func<object, object, ActionResult> actionResultProvider = null)
+            where TService : ApplicationService<object>
+        {
+            return InvokeService<TService, object, object>(actionResultProvider);
+        }
+
+        protected virtual ActionResult Invoke<TService, TPayload>(Func<TPayload, object, ActionResult> actionResultProvider = null)
             where TService : ApplicationService<object>
             where TPayload : class, new()
         {
-            return InvokeService<TService, TPayload, object>((payload, result) =>
-            {
-                actionResultProvider = actionResultProvider ?? (_ => HttpOk());
-                return actionResultProvider(payload);
-            });
+            return InvokeService<TService, TPayload, object>(actionResultProvider);
+        }
+
+        protected virtual ActionResult InvokeWithResult<TService, TResult>(Func<object, TResult, ActionResult> actionResultProvider = null)
+            where TService : ApplicationService<TResult>
+        {
+            return InvokeService<TService, object, TResult>(actionResultProvider);
         }
 
         protected virtual ActionResult Invoke<TService, TPayload, TResult>(Func<TPayload, TResult, ActionResult> actionResultProvider = null)
             where TService : ApplicationService<TResult>
             where TPayload : class, new()
         {
-            return InvokeService<TService, TPayload, TResult>((payload, result) =>
+            return InvokeService<TService, TPayload, TResult>(actionResultProvider);
+        }
+
+        private ActionResult InvokeService<TService, TPayload, TResult>(Func<TPayload, TResult, ActionResult> actionResultProvider = null)
+            where TService : ApplicationService<TResult>
+            where TPayload : class, new()
+        {
+            try
             {
-                actionResultProvider = actionResultProvider ?? ((p, r) => HttpOk());
+                var payload = new TPayload();
+                TryUpdateModel(payload);
+
+                var result = InvokeService<TService, TPayload, TResult>(payload);
+
+                actionResultProvider = actionResultProvider ?? ((p, r) => GetDefaultActionResult(p, r));
                 return actionResultProvider(payload, result);
-            });
+            }
+            catch (ApplicationServiceAuthorizationException exception)
+            {
+                return OnApplicationServiceAuthorizationException(exception);
+            }
+            catch (PayloadValidationException exception)
+            {
+                return OnPayloadValidationException(exception);
+            }
+            catch (Exception exception)
+            {
+                return OnServiceInvocationException(exception);
+            }
         }
 
         protected virtual TResult InvokeService<TService, TPayload, TResult>(TPayload payload)
@@ -81,30 +113,10 @@ namespace Lumen.AspNetMvc
             return invoker.Invoke<TService, TResult>(new ApplicationServiceContext(payload));
         }
 
-        private ActionResult InvokeService<TService, TPayload, TResult>(Func<TPayload, TResult, ActionResult> getActionResult)
-            where TService : ApplicationService<TResult>
+        protected virtual ActionResult GetDefaultActionResult<TPayload, TResult>(TPayload payload, TResult result)
             where TPayload : class, new()
         {
-            try
-            {
-                var payload = new TPayload();
-                TryUpdateModel(payload);
-
-                var result = InvokeService<TService, TPayload, TResult>(payload);
-                return getActionResult(payload, result);
-            }
-            catch (PayloadValidationException exception)
-            {
-                return OnPayloadValidationException(exception);
-            }
-            catch (ApplicationServiceAuthorizationException exception)
-            {
-                return OnApplicationServiceAuthorizationException(exception);
-            }
-            catch (Exception exception)
-            {
-                return OnServiceInvocationException(exception);
-            }
+            return HttpOk();
         }
 
         protected override JsonResult Json(object data, string contentType, Encoding contentEncoding, JsonRequestBehavior behavior)
@@ -136,6 +148,11 @@ namespace Lumen.AspNetMvc
             return new JsonBadRequestResult(response);
         }
 
+        protected virtual ActionResult OnApplicationServiceAuthorizationException(ApplicationServiceAuthorizationException exception)
+        {
+            return HttpForbidden();
+        }
+
         protected virtual ActionResult OnPayloadValidationException(PayloadValidationException exception)
         {
             if (Request.IsAjaxRequest())
@@ -145,11 +162,6 @@ namespace Lumen.AspNetMvc
 
             // Currently not supported: should do a redirect to GET (POST-REDIRECT-GET pattern).
             throw new NotSupportedException();
-        }
-
-        protected virtual ActionResult OnApplicationServiceAuthorizationException(ApplicationServiceAuthorizationException exception)
-        {
-            return HttpForbidden();
         }
 
         protected virtual ActionResult OnServiceInvocationException(Exception exception)
