@@ -6,8 +6,8 @@ namespace Lumen
     public abstract class ApplicationServiceFactory<TContext>
         where TContext : class
     {
-        public abstract TService Create<TService, TResult>(TContext context)
-            where TService : ApplicationService<TResult>;
+        public abstract TService Create<TService>(TContext context)
+            where TService : ApplicationServiceBase;
     }
 
     public class ApplicationServiceFactory : ApplicationServiceFactory<ApplicationServiceContext>
@@ -19,7 +19,7 @@ namespace Lumen
             this.kernel = Ensure.NotNull(kernel, "kernel");
         }
 
-        public override TService Create<TService, TResult>(ApplicationServiceContext context)
+        public override TService Create<TService>(ApplicationServiceContext context)
         {
             return kernel.Get<TService>(
                 new ConstructorArgument("payload", context.Payload)

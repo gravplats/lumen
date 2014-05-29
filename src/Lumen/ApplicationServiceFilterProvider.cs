@@ -4,7 +4,7 @@ using Ninject;
 
 namespace Lumen
 {
-    public class ApplicationServiceFilterProvider<TContext>
+    public class ApplicationServiceFilterProvider<TContext, TPipelineContext>
         where TContext : class
     {
         private readonly IKernel kernel;
@@ -14,13 +14,13 @@ namespace Lumen
             this.kernel = Ensure.NotNull(kernel, "kernel");
         }
 
-        public IList<ApplicationServiceFilter<TContext>> GetFilters()
+        public IList<ApplicationServiceFilter<TContext, TPipelineContext>> GetFilters()
         {
-            return kernel.GetAll<ApplicationServiceFilter<TContext>>().ToList();
+            return kernel.GetAll<ApplicationServiceFilter<TContext, TPipelineContext>>().ToList();
         }
     }
 
-    public class ApplicationServiceFilterProvider : ApplicationServiceFilterProvider<ApplicationServiceContext>
+    public class ApplicationServiceFilterProvider : ApplicationServiceFilterProvider<ApplicationServiceContext, PipelineContext>
     {
         public ApplicationServiceFilterProvider(IKernel kernel) : base(kernel) { }
     }

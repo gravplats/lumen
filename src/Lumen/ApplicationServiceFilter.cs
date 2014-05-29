@@ -1,9 +1,8 @@
 ﻿namespace Lumen
 {
-    public abstract class ApplicationServiceFilter<TContext>
+    public abstract class ApplicationServiceFilter<TContext, TPipelineContext>
         where TContext : class
     {
-        public abstract void Process<TService, TResult>(PipelineContext<TService, TResult> pipelineContext, TContext context)
-            where TService : ApplicationService<TResult>;
+        public abstract void Process(TContext context, TPipelineContext pipelineContext);
     }
 }

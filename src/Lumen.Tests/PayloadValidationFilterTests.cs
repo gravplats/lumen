@@ -32,14 +32,14 @@ namespace Lumen.Tests
             var kernel = new StandardKernel();
             kernel.Bind<PayloadValidator>().ToSelf().InSingletonScope();
             kernel.Bind<IValidator<TestApplicationService.TestPayload>>().To<TestApplicationService.TestPayloadValidator>().InSingletonScope();
-            kernel.Bind<PayloadValidationFilter<ApplicationServiceContext>>().ToSelf().InSingletonScope();
+            kernel.Bind<PayloadValidationFilter<ApplicationServiceContext, PipelineContext>>().ToSelf().InSingletonScope();
 
-            var filter = kernel.Get<PayloadValidationFilter<ApplicationServiceContext>>();
+            var filter = kernel.Get<PayloadValidationFilter<ApplicationServiceContext, PipelineContext>>();
             var service = new TestApplicationService();
             var context = new ApplicationServiceContext(new TestApplicationService.TestPayload());
 
             // Act & Assert.
-            Assert.Throws<PayloadValidationException>(() => filter.Process(new PipelineContext<TestApplicationService, object>(service), context));
+            Assert.Throws<PayloadValidationException>(() => filter.Process(context, new PipelineContext(service)));
         }
     }
 }

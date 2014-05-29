@@ -11,9 +11,9 @@ namespace Lumen.Tests
             public int Value { get; set; }
         }
 
-        public class ModifyPayloadFilter : ApplicationServiceFilter<ApplicationServiceContext>
+        public class ModifyPayloadFilter : ApplicationServiceFilter<ApplicationServiceContext, PipelineContext>
         {
-            public override void Process<TService, TResult>(PipelineContext<TService, TResult> pipelineContext, ApplicationServiceContext context)
+            public override void Process(ApplicationServiceContext context, PipelineContext pipelineContext)
             {
                 context.Payload.Value = 2;
             }
@@ -33,7 +33,7 @@ namespace Lumen.Tests
                 this.payload = payload;
             }
 
-            public override EchoPayloadResult Execute()
+            protected override EchoPayloadResult ExecuteCore()
             {
                 return new EchoPayloadResult
                 {
@@ -73,7 +73,7 @@ namespace Lumen.Tests
         {
             // Assert.
             var kernel = GetKernel();
-            kernel.Bind<ApplicationServiceFilter<ApplicationServiceContext>>().To<ModifyPayloadFilter>();
+            kernel.Bind<ApplicationServiceFilter<ApplicationServiceContext, PipelineContext>>().To<ModifyPayloadFilter>();
 
             var payload = new EchoPayloadValueService.Payload { Value = 1 };
             var context = new ApplicationServiceContext(payload);

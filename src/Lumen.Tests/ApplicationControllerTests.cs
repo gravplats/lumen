@@ -35,7 +35,7 @@ namespace Lumen.Tests
 
             public class ApplicationServiceWithResult : ApplicationService<Result>
             {
-                public override Result Execute()
+                protected override Result ExecuteCore()
                 {
                     return new Result();
                 }
@@ -49,7 +49,7 @@ namespace Lumen.Tests
 
             public class ApplicationServiceWithPayloadAndResult : ApplicationService<Result>
             {
-                public override Result Execute()
+                protected override Result ExecuteCore()
                 {
                     return new Result();
                 }

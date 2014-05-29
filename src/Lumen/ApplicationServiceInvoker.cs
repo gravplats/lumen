@@ -1,40 +1,48 @@
 ﻿namespace Lumen
 {
-    public class ApplicationServiceInvoker<TContext>
+    public abstract class ApplicationServiceInvoker<TContext, TPipelineContext>
         where TContext : class
     {
         private readonly ApplicationServiceFactory<TContext> serviceFactory;
-        private readonly ApplicationServiceFilterProvider<TContext> filterProvider;
+        private readonly ApplicationServiceFilterProvider<TContext, TPipelineContext> filterProvider;
 
-        public ApplicationServiceInvoker(ApplicationServiceFactory<TContext> serviceFactory, ApplicationServiceFilterProvider<TContext> filterProvider)
+        protected ApplicationServiceInvoker(ApplicationServiceFactory<TContext> serviceFactory, ApplicationServiceFilterProvider<TContext, TPipelineContext> filterProvider)
         {
             this.serviceFactory = Ensure.NotNull(serviceFactory, "serviceFactory");
             this.filterProvider = Ensure.NotNull(filterProvider, "filterProvider");
         }
 
         public TResult Invoke<TService, TResult>(TContext context)
-            where TService : ApplicationService<TResult>
+            where TService : ApplicationServiceBase
         {
             Ensure.NotNull(context, "context");
 
-            var service = serviceFactory.Create<TService, TResult>(context);
-            var pipelineContext = new PipelineContext<TService, TResult>(service);
+            var service = serviceFactory.Create<TService>(context);
+            var pipelineContext = CreatePipelineContext(service);
 
             var filters = filterProvider.GetFilters();
             foreach (var filter in filters)
             {
-                filter.Process(pipelineContext, context);
+                filter.Process(context, pipelineContext);
             }
 
-            return service.Execute();
+            return (TResult)service.Execute();
         }
+
+        protected abstract TPipelineContext CreatePipelineContext<TService>(TService service)
+            where TService : ApplicationServiceBase;
     }
 
-    public class ApplicationServiceInvoker : ApplicationServiceInvoker<ApplicationServiceContext>
+    public class ApplicationServiceInvoker : ApplicationServiceInvoker<ApplicationServiceContext, PipelineContext>
     {
         public ApplicationServiceInvoker(ApplicationServiceFactory serviceFactory, ApplicationServiceFilterProvider filterProvider)
             : base(serviceFactory, filterProvider)
         {
+        }
+
+        protected override PipelineContext CreatePipelineContext<TService>(TService service)
+        {
+            return new PipelineContext(service);
         }
     }
 }

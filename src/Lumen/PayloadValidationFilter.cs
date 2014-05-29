@@ -1,6 +1,7 @@
 ﻿namespace Lumen
 {
-    public class PayloadValidationFilter<TContext> : ApplicationServiceFilter<TContext>
+    public class PayloadValidationFilter<TContext, TPipelineContext> : ApplicationServiceFilter<TContext, TPipelineContext>
+        where TPipelineContext : class
         where TContext : class, IApplicationServiceContext
     {
         private readonly PayloadValidator validator;
@@ -10,7 +11,7 @@
             this.validator = Ensure.NotNull(validator, "validator");
         }
 
-        public override void Process<TService, TResult>(PipelineContext<TService, TResult> pipelineContext, TContext context)
+        public override void Process(TContext context, TPipelineContext pipelineContext)
         {
             validator.Validate(context.Payload);
         }
