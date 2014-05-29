@@ -7,16 +7,6 @@ namespace Lumen.Tests
     [TestFixture]
     public class PayloadValidationFilterTests
     {
-        public class TestContext : IPayload
-        {
-            public TestContext(dynamic payload)
-            {
-                Payload = payload;
-            }
-
-            public dynamic Payload { get; private set; }
-        }
-
         public class TestApplicationService : ApplicationService
         {
             public class TestPayload
@@ -38,16 +28,17 @@ namespace Lumen.Tests
         [Test]
         public void Can_throw_on_non_valid_payload()
         {
+            // Arrange.
             var kernel = new StandardKernel();
             kernel.Bind<PayloadValidator>().ToSelf().InSingletonScope();
             kernel.Bind<IValidator<TestApplicationService.TestPayload>>().To<TestApplicationService.TestPayloadValidator>().InSingletonScope();
-            kernel.Bind<PayloadValidationFilter<TestContext>>().ToSelf().InSingletonScope();
+            kernel.Bind<PayloadValidationFilter<ApplicationServiceContext>>().ToSelf().InSingletonScope();
 
-            var context = new TestContext(new TestApplicationService.TestPayload());
-
-            var filter = kernel.Get<PayloadValidationFilter<TestContext>>();
+            var filter = kernel.Get<PayloadValidationFilter<ApplicationServiceContext>>();
             var service = new TestApplicationService();
+            var context = new ApplicationServiceContext(new TestApplicationService.TestPayload());
 
+            // Act & Assert.
             Assert.Throws<PayloadValidationException>(() => filter.Process(new PipelineContext<TestApplicationService, object>(service), context));
         }
     }
