@@ -1,6 +1,6 @@
 ﻿namespace Lumen
 {
-    public interface IPayload
+    public interface IApplicationServiceContext
     {
         dynamic Payload { get; }
     }

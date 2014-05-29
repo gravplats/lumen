@@ -1,7 +1,7 @@
 ﻿namespace Lumen
 {
     public class PayloadValidationFilter<TContext> : ApplicationServiceFilter<TContext>
-        where TContext : class, IPayload
+        where TContext : class, IApplicationServiceContext
     {
         private readonly PayloadValidator validator;
 

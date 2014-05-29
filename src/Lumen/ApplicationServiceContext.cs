@@ -1,6 +1,6 @@
 ﻿namespace Lumen
 {
-    public class ApplicationServiceContext : IPayload
+    public class ApplicationServiceContext : IApplicationServiceContext
     {
         public ApplicationServiceContext(dynamic payload)
         {

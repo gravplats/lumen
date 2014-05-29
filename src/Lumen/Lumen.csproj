@@ -64,7 +64,7 @@
     <Compile Include="PipelineContext.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="DependencyAttribute.cs" />
-    <Compile Include="IPayload.cs" />
+    <Compile Include="IApplicationServiceContext.cs" />
     <Compile Include="NoPayloadAttribute.cs" />
     <Compile Include="NoValidatorAttribute.cs" />
     <Compile Include="PayloadValidationFilter.cs" />
