@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lumen
+﻿namespace Lumen
 {
     public class PayloadValidationFilter<TContext> : ApplicationServiceFilter<TContext>
         where TContext : class, IPayload
@@ -12,10 +10,9 @@ namespace Lumen
             this.validator = Ensure.NotNull(validator, "validator");
         }
 
-        protected override TResult ProcessCore<TResult>(PipelineContext pipelineContext, TContext context, Func<PipelineContext, TContext, TResult> next)
+        public override void Process(PipelineContext pipelineContext, TContext context)
         {
             validator.Validate(context.Payload);
-            return next(pipelineContext, context);
         }
     }
 }

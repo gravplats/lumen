@@ -71,7 +71,6 @@
     <Compile Include="PayloadValidationException.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="ApplicationServiceFilter.cs" />
-    <Compile Include="ApplicationServicePipelineFactory.cs" />
     <Compile Include="PayloadValidator.cs" />
     <Compile Include="Security\ApplicationIdentity.cs" />
     <Compile Include="Security\ApplicationPrincipal.cs" />

@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Ninject;
 
 namespace Lumen.Tests
@@ -14,10 +13,9 @@ namespace Lumen.Tests
 
         public class ModifyPayloadFilter : ApplicationServiceFilter<ApplicationServiceContext>
         {
-            protected override TResult ProcessCore<TResult>(PipelineContext pipelineContext, ApplicationServiceContext context, Func<PipelineContext, ApplicationServiceContext, TResult> next)
+            public override void Process(PipelineContext pipelineContext, ApplicationServiceContext context)
             {
                 context.Payload.Value = 2;
-                return next(pipelineContext, context);
             }
         }
 
@@ -49,7 +47,6 @@ namespace Lumen.Tests
             var kernel = new StandardKernel();
             kernel.Bind<ApplicationServiceInvoker>().ToSelf().InSingletonScope();
             kernel.Bind<ApplicationServiceFactory>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServicePipelineFactory>().ToSelf().InSingletonScope();
             kernel.Bind<ApplicationServiceFilterProvider>().ToSelf().InSingletonScope();
 
             return kernel;

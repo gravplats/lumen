@@ -41,9 +41,8 @@ namespace Lumen.Tests
             var context = new TestContext(new TestPayload());
 
             var filter = kernel.Get<PayloadValidationFilter<TestContext>>();
-            filter.Register<object>((_, ctx) => null);
 
-            Assert.Throws<PayloadValidationException>(() => filter.Process<object>(new PipelineContext(null), context));
+            Assert.Throws<PayloadValidationException>(() => filter.Process(new PipelineContext(null), context));
         }
     }
 }
