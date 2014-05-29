@@ -19,4 +19,9 @@ namespace Lumen
             return kernel.GetAll<ApplicationServiceFilter<TContext>>().ToList();
         }
     }
+
+    public class ApplicationServiceFilterProvider : ApplicationServiceFilterProvider<ApplicationServiceContext>
+    {
+        public ApplicationServiceFilterProvider(IKernel kernel) : base(kernel) { }
+    }
 }

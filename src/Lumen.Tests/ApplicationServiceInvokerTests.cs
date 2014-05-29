@@ -1,75 +1,91 @@
 ﻿using System;
 using NUnit.Framework;
 using Ninject;
-using Ninject.Parameters;
 
 namespace Lumen.Tests
 {
     [TestFixture]
     public class ApplicationServiceInvokerTests
     {
-        public class TestContext { }
-
-        public class TestFilter : ApplicationServiceFilter<TestContext>
+        public class EchoPayloadResult
         {
-            protected override TResult ProcessCore<TResult>(PipelineContext pipelineContext, TestContext context, Func<PipelineContext, TestContext, TResult> next)
+            public int Value { get; set; }
+        }
+
+        public class ModifyPayloadFilter : ApplicationServiceFilter<ApplicationServiceContext>
+        {
+            protected override TResult ProcessCore<TResult>(PipelineContext pipelineContext, ApplicationServiceContext context, Func<PipelineContext, ApplicationServiceContext, TResult> next)
             {
+                context.Payload.Value = 2;
                 return next(pipelineContext, context);
             }
         }
 
-        public class TestApplicationService : ApplicationService
+        public class EchoPayloadValueService : ApplicationService<EchoPayloadResult>
         {
-            protected override void ExecuteCore() { }
+            public class Payload
+            {
+                public int Value { get; set; }
+            }
+
+            private readonly Payload payload;
+
+            public EchoPayloadValueService(Payload payload)
+            {
+                this.payload = payload;
+            }
+
+            public override EchoPayloadResult Execute()
+            {
+                return new EchoPayloadResult
+                {
+                    Value = payload.Value
+                };
+            }
         }
 
-        public class NinjectApplicationServiceFactory : ApplicationServiceFactory<TestContext>
+        protected IKernel GetKernel()
         {
-            private readonly IKernel kernel;
+            var kernel = new StandardKernel();
+            kernel.Bind<ApplicationServiceInvoker>().ToSelf().InSingletonScope();
+            kernel.Bind<ApplicationServiceFactory>().ToSelf().InSingletonScope();
+            kernel.Bind<ApplicationServicePipelineFactory>().ToSelf().InSingletonScope();
+            kernel.Bind<ApplicationServiceFilterProvider>().ToSelf().InSingletonScope();
 
-            public NinjectApplicationServiceFactory(IKernel kernel)
-            {
-                this.kernel = kernel;
-            }
-
-            public override TService Create<TService, TResult>(TestContext context)
-            {
-                return kernel.Get<TService>(new ConstructorArgument("context", context));
-            }
+            return kernel;
         }
 
         [Test]
         public void Can_invoke_service_without_filters()
         {
-            var kernel = new StandardKernel();
-            kernel.Bind<ApplicationServiceInvoker<TestContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFactory<TestContext>>().To<NinjectApplicationServiceFactory>().InSingletonScope();
-            kernel.Bind<ApplicationServicePipelineFactory<TestContext>>().ToSelf().InSingletonScope();
+            // Assert.
+            var kernel = GetKernel();
 
-            var context = new TestContext();
+            var payload = new EchoPayloadValueService.Payload { Value = 1 };
+            var context = new ApplicationServiceContext(payload);
 
-            var invoker = kernel.Get<ApplicationServiceInvoker<TestContext>>();
-            var result = invoker.Invoke<TestApplicationService, object>(context);
+            // Act.
+            var result = kernel.Get<ApplicationServiceInvoker>().Invoke<EchoPayloadValueService, EchoPayloadResult>(context);
 
-            result.ShouldBeNull();
+            // Assert.
+            result.Value.ShouldBe(1);
         }
 
         [Test]
         public void Can_invoke_service_with_filters()
         {
-            var kernel = new StandardKernel();
-            kernel.Bind<ApplicationServiceInvoker<TestContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFactory<TestContext>>().To<NinjectApplicationServiceFactory>().InSingletonScope();
-            kernel.Bind<ApplicationServicePipelineFactory<TestContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFilterProvider<TestContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFilter<TestContext>>().To<TestFilter>();
+            // Assert.
+            var kernel = GetKernel();
+            kernel.Bind<ApplicationServiceFilter<ApplicationServiceContext>>().To<ModifyPayloadFilter>();
 
-            var context = new TestContext();
+            var payload = new EchoPayloadValueService.Payload { Value = 1 };
+            var context = new ApplicationServiceContext(payload);
 
-            var invoker = kernel.Get<ApplicationServiceInvoker<TestContext>>();
-            var result = invoker.Invoke<TestApplicationService, object>(context);
+            // Act.
+            var result = kernel.Get<ApplicationServiceInvoker>().Invoke<EchoPayloadValueService, EchoPayloadResult>(context);
 
-            result.ShouldBeNull();
+            // Assert.
+            result.Value.ShouldBe(2);
         }
     }
 }

@@ -48,4 +48,12 @@ namespace Lumen
             return filter.Process<TResult>;
         }
     }
+
+    public class ApplicationServicePipelineFactory : ApplicationServicePipelineFactory<ApplicationServiceContext>
+    {
+        public ApplicationServicePipelineFactory(ApplicationServiceFilterProvider provider)
+            : base(provider)
+        {
+        }
+    }
 }
