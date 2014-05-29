@@ -10,7 +10,7 @@
             this.validator = Ensure.NotNull(validator, "validator");
         }
 
-        public override void Process(PipelineContext pipelineContext, TContext context)
+        public override void Process<TService, TResult>(PipelineContext<TService, TResult> pipelineContext, TContext context)
         {
             validator.Validate(context.Payload);
         }

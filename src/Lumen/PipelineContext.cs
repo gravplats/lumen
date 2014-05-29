@@ -2,13 +2,15 @@
 
 namespace Lumen
 {
-    public class PipelineContext
+    public class PipelineContext<TService, TResult>
+        where TService : ApplicationService<TResult>
     {
-        public PipelineContext(Type serviceType)
+        public PipelineContext(TService service)
         {
-            ServiceType = serviceType;
+            Service = Ensure.NotNull(service, "service");
         }
 
-        public Type ServiceType { get; private set; }
+        public TService Service { get; private set; }
+        public Type ServiceType { get { return Service.GetType(); } }
     }
 }

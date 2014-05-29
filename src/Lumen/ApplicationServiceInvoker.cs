@@ -17,7 +17,8 @@
         {
             Ensure.NotNull(context, "context");
 
-            var pipelineContext = new PipelineContext(typeof(TService));
+            var service = serviceFactory.Create<TService, TResult>(context);
+            var pipelineContext = new PipelineContext<TService, TResult>(service);
 
             var filters = filterProvider.GetFilters();
             foreach (var filter in filters)
@@ -25,7 +26,7 @@
                 filter.Process(pipelineContext, context);
             }
 
-            return serviceFactory.Create<TService, TResult>(context).Execute();
+            return service.Execute();
         }
     }
 

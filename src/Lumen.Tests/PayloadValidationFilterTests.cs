@@ -17,17 +17,22 @@ namespace Lumen.Tests
             public dynamic Payload { get; private set; }
         }
 
-        public class TestPayload
+        public class TestApplicationService : ApplicationService
         {
-            public string Text { get; set; }
-        }
-
-        public class TestPayloadValidator : AbstractValidator<TestPayload>
-        {
-            public TestPayloadValidator()
+            public class TestPayload
             {
-                RuleFor(x => x.Text).NotEmpty();
+                public string Text { get; set; }
             }
+
+            public class TestPayloadValidator : AbstractValidator<TestPayload>
+            {
+                public TestPayloadValidator()
+                {
+                    RuleFor(x => x.Text).NotEmpty();
+                }
+            }
+
+            protected override void ExecuteCore() { }
         }
 
         [Test]
@@ -35,14 +40,15 @@ namespace Lumen.Tests
         {
             var kernel = new StandardKernel();
             kernel.Bind<PayloadValidator>().ToSelf().InSingletonScope();
-            kernel.Bind<IValidator<TestPayload>>().To<TestPayloadValidator>().InSingletonScope();
+            kernel.Bind<IValidator<TestApplicationService.TestPayload>>().To<TestApplicationService.TestPayloadValidator>().InSingletonScope();
             kernel.Bind<PayloadValidationFilter<TestContext>>().ToSelf().InSingletonScope();
 
-            var context = new TestContext(new TestPayload());
+            var context = new TestContext(new TestApplicationService.TestPayload());
 
             var filter = kernel.Get<PayloadValidationFilter<TestContext>>();
+            var service = new TestApplicationService();
 
-            Assert.Throws<PayloadValidationException>(() => filter.Process(new PipelineContext(null), context));
+            Assert.Throws<PayloadValidationException>(() => filter.Process(new PipelineContext<TestApplicationService, object>(service), context));
         }
     }
 }

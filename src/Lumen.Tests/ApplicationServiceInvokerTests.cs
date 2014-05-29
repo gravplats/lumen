@@ -13,7 +13,7 @@ namespace Lumen.Tests
 
         public class ModifyPayloadFilter : ApplicationServiceFilter<ApplicationServiceContext>
         {
-            public override void Process(PipelineContext pipelineContext, ApplicationServiceContext context)
+            public override void Process<TService, TResult>(PipelineContext<TService, TResult> pipelineContext, ApplicationServiceContext context)
             {
                 context.Payload.Value = 2;
             }
