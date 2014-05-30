@@ -90,6 +90,7 @@
     <Compile Include="ApplicationControllerTests.cs" />
     <Compile Include="ApplicationServiceInvokerTests.cs" />
     <Compile Include="AssertExtensions.cs" />
+    <Compile Include="CustomPipelineContextTests.cs" />
     <Compile Include="PayloadValidationFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
