@@ -13,7 +13,7 @@
         }
 
         public TResult Invoke<TService, TResult>(TContext context)
-            where TService : ApplicationServiceBase
+            where TService : IApplicationService
         {
             Ensure.NotNull(context, "context");
 
@@ -30,7 +30,7 @@
         }
 
         protected abstract TPipelineContext CreatePipelineContext<TService>(TService service)
-            where TService : ApplicationServiceBase;
+            where TService : IApplicationService;
     }
 
     public class ApplicationServiceInvoker : ApplicationServiceInvoker<ApplicationServiceContext, PipelineContext>

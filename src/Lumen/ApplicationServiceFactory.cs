@@ -7,7 +7,7 @@ namespace Lumen
         where TContext : class
     {
         public abstract TService Create<TService>(TContext context)
-            where TService : ApplicationServiceBase;
+            where TService : IApplicationService;
     }
 
     public class ApplicationServiceFactory : ApplicationServiceFactory<ApplicationServiceContext>

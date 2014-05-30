@@ -3,7 +3,7 @@
 namespace Lumen
 {
     public class PipelineContext<TServiceBase>
-        where TServiceBase : ApplicationServiceBase
+        where TServiceBase : class, IApplicationService
     {
         public PipelineContext(TServiceBase service)
         {
@@ -14,8 +14,8 @@ namespace Lumen
         public Type ServiceType { get { return Service.GetType(); } }
     }
 
-    public class PipelineContext : PipelineContext<ApplicationServiceBase>
+    public class PipelineContext : PipelineContext<IApplicationService>
     {
-        public PipelineContext(ApplicationServiceBase service) : base(service) { }
+        public PipelineContext(IApplicationService service) : base(service) { }
     }
 }

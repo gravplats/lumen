@@ -52,7 +52,7 @@ namespace Lumen.AspNetMvc
         }
 
         protected virtual ActionResult Invoke<TService>(Func<object, object, ActionResult> actionResultProvider = null)
-            where TService : ApplicationServiceBase
+            where TService : IApplicationService
         {
             return InvokeService<TService, object, object>(actionResultProvider);
         }
@@ -78,7 +78,7 @@ namespace Lumen.AspNetMvc
         }
 
         private ActionResult InvokeService<TService, TPayload, TResult>(Func<TPayload, TResult, ActionResult> actionResultProvider = null)
-            where TService : ApplicationServiceBase
+            where TService : IApplicationService
             where TPayload : class, new()
         {
             try
@@ -106,7 +106,7 @@ namespace Lumen.AspNetMvc
         }
 
         protected virtual TResult InvokeService<TService, TPayload, TResult>(TPayload payload)
-            where TService : ApplicationServiceBase
+            where TService : IApplicationService
             where TPayload : class, new()
         {
             var invoker = DependencyResolver.Current.GetService<ApplicationServiceInvoker>();

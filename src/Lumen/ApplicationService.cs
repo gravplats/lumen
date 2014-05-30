@@ -1,8 +1,8 @@
 ﻿namespace Lumen
 {
-    public abstract class ApplicationService : ApplicationServiceBase
+    public abstract class ApplicationService : IApplicationService
     {
-        public sealed override object Execute()
+        public object Execute()
         {
             ExecuteCore();
             return null;
@@ -11,9 +11,9 @@
         protected abstract void ExecuteCore();
     }
 
-    public abstract class ApplicationService<TResult> : ApplicationServiceBase
+    public abstract class ApplicationService<TResult> : IApplicationService
     {
-        public sealed override object Execute()
+        public object Execute()
         {
             return ExecuteCore();
         }
