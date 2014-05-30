@@ -42,21 +42,12 @@ namespace Lumen.Tests
             }
         }
 
-        protected IKernel GetKernel()
-        {
-            var kernel = new StandardKernel();
-            kernel.Bind<ApplicationServiceInvoker>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFactory>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFilterProvider>().ToSelf().InSingletonScope();
-
-            return kernel;
-        }
-
         [Test]
         public void Can_invoke_service_without_filters()
         {
             // Assert.
-            var kernel = GetKernel();
+            var kernel = new StandardKernel();
+            kernel.BindApplicationServicePipeline();
 
             var payload = new EchoPayloadValueService.Payload { Value = 1 };
             var context = new ApplicationServiceContext(payload);
@@ -72,8 +63,9 @@ namespace Lumen.Tests
         public void Can_invoke_service_with_filters()
         {
             // Assert.
-            var kernel = GetKernel();
-            kernel.Bind<ApplicationServiceFilter<ApplicationServiceContext, PipelineContext>>().To<ModifyPayloadFilter>();
+            var kernel = new StandardKernel();
+            kernel.BindApplicationServicePipeline()
+                  .WithFilter<ModifyPayloadFilter>();
 
             var payload = new EchoPayloadValueService.Payload { Value = 1 };
             var context = new ApplicationServiceContext(payload);

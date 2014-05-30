@@ -70,10 +70,8 @@ namespace Lumen.Tests
         protected IKernel GetKernel()
         {
             var kernel = new StandardKernel();
-            kernel.Bind<ApplicationServiceInvoker<ApplicationServiceContext, CustomPipelineContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFactory<ApplicationServiceContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFilterProvider<ApplicationServiceContext, CustomPipelineContext>>().ToSelf().InSingletonScope();
-            kernel.Bind<ApplicationServiceFilter<ApplicationServiceContext, CustomPipelineContext>>().To<CustomApplicationServiceFilter>();
+            kernel.BindApplicationServicePipeline<ApplicationServiceContext, CustomPipelineContext>()
+                  .WithFilter<CustomApplicationServiceFilter>();
 
             return kernel;
         }

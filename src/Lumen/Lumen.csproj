@@ -61,6 +61,7 @@
     <Compile Include="ApplicationServiceFilterProvider.cs" />
     <Compile Include="ApplicationServiceInvoker.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
+    <Compile Include="NinjectExtensions.cs" />
     <Compile Include="NoAuthorizationAttribute.cs" />
     <Compile Include="PipelineContext.cs" />
     <Compile Include="EnumerableExtensions.cs" />
